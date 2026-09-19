@@ -1,6 +1,7 @@
 ---
 import Layout from './Layout.astro';
 import type { CollectionEntry } from 'astro:content';
+import { withBase } from '../consts';
 
 interface Props {
   post: CollectionEntry<'blog'>;
@@ -39,7 +40,7 @@ const readingTime = Math.max(1, Math.ceil(post.body.length / 500));
           <ul class="tag-list">
             {tags.map((tag) => (
               <li>
-                <a href={`/tags/${tag}/`}>#{tag}</a>
+                <a href={withBase(`/tags/${tag}/`)}>#{tag}</a>
               </li>
             ))}
           </ul>

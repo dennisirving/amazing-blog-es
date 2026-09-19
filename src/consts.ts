@@ -10,3 +10,15 @@ export const SITE = {
   github: 'https://github.com/dennisirving',
   email: 'you@example.com',
 };
+
+/**
+ * 给站内绝对路径拼上 Astro 的 base 前缀。
+ * GitHub Pages 项目站（base = '/amazing-blog-es/'）必需；
+ * 部署在根路径（如 Vercel，base = '/'）时原样返回。
+ * 用法：<a href={withBase('/blog/')}>文章</a>
+ */
+export function withBase(path: string): string {
+  const base = import.meta.env.BASE_URL.replace(/\/+$/, ''); // '' 或 '/amazing-blog-es'
+  const p = path.startsWith('/') ? path : `/${path}`;
+  return `${base}${p}`;
+}

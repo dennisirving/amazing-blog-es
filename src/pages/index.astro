@@ -2,7 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import PostCard from '../components/PostCard.astro';
 import { getCollection } from 'astro:content';
-import { SITE } from '../consts';
+import { SITE, withBase } from '../consts';
 
 const posts = (await getCollection('blog', ({ data }) => !data.draft))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
@@ -20,6 +20,6 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
     <div class="post-list">
       {posts.map((post) => <PostCard post={post} />)}
     </div>
-    <p class="see-all"><a href="/blog/">查看全部文章 →</a></p>
+    <p class="see-all"><a href={withBase('/blog/')}>查看全部文章 →</a></p>
   </section>
 </Layout>

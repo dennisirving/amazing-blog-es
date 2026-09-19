@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
+import { withBase } from '../../consts';
 
 const posts = await getCollection('blog', ({ data }) => !data.draft);
 const tags = new Map<string, number>();
@@ -21,7 +22,7 @@ const sortedTags = [...tags.entries()].sort((a, b) => b[1] - a[1]);
       <ul class="tag-cloud">
         {sortedTags.map(([tag, count]) => (
           <li>
-            <a href={`/tags/${tag}/`}>{tag} <span class="tag-count">{count}</span></a>
+            <a href={withBase(`/tags/${tag}/`)}>{tag} <span class="tag-count">{count}</span></a>
           </li>
         ))}
       </ul>

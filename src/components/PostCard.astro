@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import { withBase } from '../consts';
 
 interface Props {
   post: CollectionEntry<'blog'>;
@@ -16,7 +17,7 @@ const dateStr = pubDate.toLocaleDateString('zh-CN', {
 ---
 
 <article class="post-card">
-  <a href={`/blog/${post.id}/`} class="post-card-title">{title}</a>
+  <a href={withBase(`/blog/${post.id}/`)} class="post-card-title">{title}</a>
   <p class="post-card-desc">{description}</p>
   <div class="post-card-meta">
     <time datetime={pubDate.toISOString()}>{dateStr}</time>
