@@ -1,0 +1,22 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { SITE } from '../consts';
+---
+
+<Layout title="关于">
+  <article class="prose">
+    <h1>关于</h1>
+    <p>你好，我是 {SITE.author}。这里是我的个人博客，用来记录技术、生活与阅读中的思考。</p>
+    <p>你可以通过以下方式找到我：</p>
+    <ul>
+      <li>
+        GitHub：
+        <a href={SITE.github} target="_blank" rel="noopener">{SITE.github.replace('https://', '')}</a>
+      </li>
+      <li>
+        邮箱：<a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+      </li>
+    </ul>
+    <p>如果你想一起交流技术或合作，欢迎随时联系。</p>
+  </article>
+</Layout>

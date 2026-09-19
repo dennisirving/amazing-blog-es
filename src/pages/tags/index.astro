@@ -1,0 +1,30 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = await getCollection('blog', ({ data }) => !data.draft);
+const tags = new Map<string, number>();
+for (const post of posts) {
+  for (const tag of post.data.tags) {
+    tags.set(tag, (tags.get(tag) ?? 0) + 1);
+  }
+}
+const sortedTags = [...tags.entries()].sort((a, b) => b[1] - a[1]);
+---
+
+<Layout title="标签">
+  <h1>标签</h1>
+  {
+    sortedTags.length === 0 ? (
+      <p class="subtitle">还没有标签，快去写文章吧。</p>
+    ) : (
+      <ul class="tag-cloud">
+        {sortedTags.map(([tag, count]) => (
+          <li>
+            <a href={`/tags/${tag}/`}>{tag} <span class="tag-count">{count}</span></a>
+          </li>
+        ))}
+      </ul>
+    )
+  }
+</Layout>

@@ -1,0 +1,25 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PostCard from '../components/PostCard.astro';
+import { getCollection } from 'astro:content';
+import { SITE } from '../consts';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 5);
+---
+
+<Layout>
+  <section class="hero">
+    <h1>你好，我是 {SITE.author} 👋</h1>
+    <p>{SITE.description}</p>
+  </section>
+
+  <section>
+    <h2 class="section-title">最新文章</h2>
+    <div class="post-list">
+      {posts.map((post) => <PostCard post={post} />)}
+    </div>
+    <p class="see-all"><a href="/blog/">查看全部文章 →</a></p>
+  </section>
+</Layout>
