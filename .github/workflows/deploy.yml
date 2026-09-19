@@ -1,28 +1,45 @@
 name: Deploy to GitHub Pages
 
 on:
+  # 推送到 main 分支时自动部署
   push:
     branches: [main]
+  # 允许在 Actions 页面手动触发
   workflow_dispatch:
 
-# 允许 GitHub Pages 部署所需的权限
+# 允许工作流克隆仓库并向 GitHub Pages 发布
 permissions:
   contents: read
   pages: write
   id-token: write
 
+# 同一时间只保留一个 Pages 部署
 concurrency:
   group: pages
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
+  # 作业 1：安装依赖、构建站点、上传产物
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - name: Checkout your repository using git
+        uses: actions/checkout@v7
       - name: Install, build, and upload your site
-        uses: withastro/action@v3
+        uses: withastro/action@v6
         # with:
-        #   package-manager: npm
-        #   path: .  # 若仓库根目录即项目目录，无需设置
+        #   path: .               # Astro 项目在仓库中的根目录（可选）
+        #   node-version: 24      # 指定 Node 版本，默认 24（可选）
+        #   package-manager: npm  # 根据 lockfile 自动识别，一般无需设置（可选）
+
+  # 作业 2：把上传的产物真正发布到 GitHub Pages（缺少这个作业就会 404）
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
